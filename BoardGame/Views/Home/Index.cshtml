@@ -58,52 +58,6 @@
             return s;
         }
     }
-    <div class="bg-light py-1 mt-2">
-        <h2 class="text-center">All Product</h2>
-    </div>
-
-    <form method="post" action="/Home/Index">
-        <div class="row mb-3">
-            <div class="col-3">
-                <input type="text" name="searchText" class="form-control" placeholder="Search Products" value="@Request.Form["searchText"]" />
-            </div>
-            <div class="col-3">
-                <select id="so" class="form-control" name="so">
-                    <option value="" @IsSelected("")>Item Name</option>
-                    <option value="pa" @IsSelected("pa")>Price Ascending</option>
-                    <option value="pd" @IsSelected("pd")>Price Descending</option>
-                </select>
-            </div>
-            <div class="col-2">
-                <button type="submit" class="btn btn-primary">Search</button>
-            </div>
-        </div>
-    </form>
-
-    <div class="row justify-content-center">
-        @if (data.Count() > 0)
-        {
-            foreach (var row in data)
-            {
-
-                <div class="card col-3 m-1">
-                    <a href="/Home/Details?id=@row.itemID">
-                        <img src="@row.itemImage" class="card-img-top" alt="@row.itemName image" />
-                        <div class="card-body">
-                            <h5 class="card-title">@row.itemName</h5>
-                            <p class="card-text">@row.itemDescription</p>
-                            <p class="card-text">@row.itemCost.ToString("C")</p>
-                        </div>
-                    </a>
-                </div>
-            }
-        }
-        else
-        {
-            <h2 class="text-danger text-center">Oops! No matching products returned...</h2>
-        }
-    </div>
-
     <script>
         var card = document.querySelectorAll(".card");
         for (var i = 0; i < card.length; i++) {

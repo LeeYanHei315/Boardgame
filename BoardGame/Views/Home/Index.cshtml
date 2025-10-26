@@ -1,0 +1,221 @@
+﻿@*<main>
+        <section class="row" aria-labelledby="aspnetTitle">
+            <h1 id="title">ASP.NET</h1>
+            <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
+            <p><a href="https://asp.net" class="btn btn-primary btn-md">Learn more &raquo;</a></p>
+        </section>
+
+        <div class="row">
+            <section class="col-md-4" aria-labelledby="gettingStartedTitle">
+                <h2 id="gettingStartedTitle">Getting started</h2>
+                <p>
+                    ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
+                    enables a clean separation of concerns and gives you full control over markup
+                    for enjoyable, agile development.
+                </p>
+                <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+            </section>
+            <section class="col-md-4" aria-labelledby="librariesTitle">
+                <h2 id="librariesTitle">Get more libraries</h2>
+                <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
+                <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+            </section>
+            <section class="col-md-4" aria-labelledby="hostingTitle">
+                <h2 id="hostingTitle">Web Hosting</h2>
+                <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
+                <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+            </section>
+        </div>
+    </main>*@
+
+@*@using WebMatrix.Data;
+
+    @{
+        var db = Database.Open("GameDB");
+        var sql = "select * from BoardGame where itemName like concat(@0, '%') ";
+        var text = Request.Form["searchText"];
+        var sortOrder = Request.Form["so"];
+        if (sortOrder == "pa")
+        {
+            sql += "order by itemCost ASC";
+        }
+        else if (sortOrder == "pd")
+        {
+            sql += "order by itemCost DESC";
+        }
+        else
+        {
+            sql += "order by itemname";
+        }
+        var data = db.Query(sql, text);
+
+    }
+    @functions{
+        string IsSelected(string val)
+        {
+            string s = null;
+            if (Request.Form["so"] == val) { s = "selected"; }
+            return s;
+        }
+    }
+    <div class="bg-light py-1 mt-2">
+        <h2 class="text-center">All Product</h2>
+    </div>
+
+    <form method="post" action="/Home/Index">
+        <div class="row mb-3">
+            <div class="col-3">
+                <input type="text" name="searchText" class="form-control" placeholder="Search Products" value="@Request.Form["searchText"]" />
+            </div>
+            <div class="col-3">
+                <select id="so" class="form-control" name="so">
+                    <option value="" @IsSelected("")>Item Name</option>
+                    <option value="pa" @IsSelected("pa")>Price Ascending</option>
+                    <option value="pd" @IsSelected("pd")>Price Descending</option>
+                </select>
+            </div>
+            <div class="col-2">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="row justify-content-center">
+        @if (data.Count() > 0)
+        {
+            foreach (var row in data)
+            {
+
+                <div class="card col-3 m-1">
+                    <a href="/Home/Details?id=@row.itemID">
+                        <img src="@row.itemImage" class="card-img-top" alt="@row.itemName image" />
+                        <div class="card-body">
+                            <h5 class="card-title">@row.itemName</h5>
+                            <p class="card-text">@row.itemDescription</p>
+                            <p class="card-text">@row.itemCost.ToString("C")</p>
+                        </div>
+                    </a>
+                </div>
+            }
+        }
+        else
+        {
+            <h2 class="text-danger text-center">Oops! No matching products returned...</h2>
+        }
+    </div>
+
+    <script>
+        var card = document.querySelectorAll(".card");
+        for (var i = 0; i < card.length; i++) {
+            card[i].addEventListener('click', function () {
+                this.querySelector('a').click();
+            })
+        }
+    </script>*@
+
+@using WebMatrix.Data;
+@{
+    var db = Database.Open("GameDB");
+    var sql = "select * from BoardGame where Name like concat(@0, '%')";
+    var text = Request.Form["searchText"];
+    var data = db.Query(sql,text);
+
+}
+<style>
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+    }
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+    input:checked + .slider {
+        background-color: #2196F3;
+    }
+
+    input:focus + .slider {
+        box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked + .slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+    }
+    .slider.round {
+        border-radius: 34px;
+    }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+</style>
+<div class="bg-light py-1 mt-2">
+    <h2 class="text-center">All BoardGame</h2>
+</div>
+
+<form method="post" action="/Home/Index">
+    <div class="row mb-3">
+        <div class="col-3">
+            <input type="text" name="searchText" class="form-control" placeholder="Search Products" value="@Request.Form["searchText"]" />
+        </div>
+        <div class="col-2">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </div>
+</form>
+<label class="switch">
+    <input type="checkbox">
+    <span class="slider round"></span>
+</label>
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+    </tr>
+    @foreach (var row in data)
+    {
+        <tr>
+            <td>@row.Name</td>
+            <td>@row.Description</td>
+        </tr>
+    }
+</table>
+<div class="row justify-content-center">
+        <div class="card col-4 m-2">
+                <img src="@row.ImagePath" class="card-img-top" alt="@row.ImagePath image" />
+                <div class="card-body">
+                    <h5 class="card-title">@row.Name</h5>
+                    <p class="card-text">@row.Description</p>
+                    <p class="card-text">Language: @row.LanguageEase</p>
+                </div>
+            </div>
+    }
+</div>

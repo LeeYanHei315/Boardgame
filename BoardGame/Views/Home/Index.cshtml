@@ -116,66 +116,14 @@
 @using WebMatrix.Data;
 @{
     var db = Database.Open("GameDB");
-    var sql = "select * from BoardGame where Name like concat(@0, '%')";
+    var sql = "select BoardGame.Name, BoardGame.Description, BoardGame.Name, BoardGame.Family, Category.Category, BoardGame.ImagePath, BoardGame.BGGid from BoardGame" +
+        " join GameCategory on BoardGame.BGGId = GameCategory.BGGID" +
+        " join Category on GameCategory.Category = Category.CategoryId" +
+        " where BoardGame.Name like concat(@0, '%')";
     var text = Request.Form["searchText"];
     var data = db.Query(sql,text);
 
 }
-<style>
-    .switch {
-        position: relative;
-        display: inline-block;
-        width: 60px;
-        height: 34px;
-    }
-    .switch input {
-        opacity: 0;
-        width: 0;
-        height: 0;
-    }
-    .slider {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: #ccc;
-        -webkit-transition: .4s;
-        transition: .4s;
-    }
-    .slider:before {
-        position: absolute;
-        content: "";
-        height: 26px;
-        width: 26px;
-        left: 4px;
-        bottom: 4px;
-        background-color: white;
-        -webkit-transition: .4s;
-        transition: .4s;
-    }
-    input:checked + .slider {
-        background-color: #2196F3;
-    }
-
-    input:focus + .slider {
-        box-shadow: 0 0 1px #2196F3;
-    }
-
-    input:checked + .slider:before {
-        -webkit-transform: translateX(26px);
-        -ms-transform: translateX(26px);
-        transform: translateX(26px);
-    }
-    .slider.round {
-        border-radius: 34px;
-    }
-
-        .slider.round:before {
-            border-radius: 50%;
-        }
-</style>
 <div class="bg-light py-1 mt-2">
     <h2 class="text-center">All BoardGame</h2>
 </div>
@@ -190,32 +138,70 @@
         </div>
     </div>
 </form>
-<label class="switch">
-    <input type="checkbox">
-    <span class="slider round"></span>
-</label>
 
-<table>
-    <tr>
-        <th>Name</th>
-        <th>Description</th>
-    </tr>
-    @foreach (var row in data)
-    {
-        <tr>
-            <td>@row.Name</td>
-            <td>@row.Description</td>
-        </tr>
-    }
-</table>
-<div class="row justify-content-center">
-        <div class="card col-4 m-2">
-                <img src="@row.ImagePath" class="card-img-top" alt="@row.ImagePath image" />
-                <div class="card-body">
-                    <h5 class="card-title">@row.Name</h5>
-                    <p class="card-text">@row.Description</p>
-                    <p class="card-text">Language: @row.LanguageEase</p>
-                </div>
-            </div>
-    }
+<div class="form-check form-switch">
+    <input class="form-check-input" type="checkbox" role ="switch" id="displayswitch" onclick="displaybg()" >
+    <label class="form-check-label" for="displayswitch" id="displayswitchtext">Table form</label>
 </div>
+
+<div id="infro">
+    <table id="infro">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Id</th>
+            <th>Category</th>
+        </tr>
+        @foreach (var row in data)
+        {
+            <tr>
+                <td>@row.Name</td>
+                <td>@row.Description</td>
+                <td>@row.BGGid</td>
+                <td>@row.Category</td>
+            </tr>
+        }
+    </table>
+</div>
+
+<script>
+    function displaybg() {
+        var toggle = document.getElementById("displayswitch")
+        if (toggle.checked) {
+            document.getElementById("infro").innerHTML =
+            `<div class="row justify-content-center" id="infro">
+                @foreach (var row in data) {
+                    <div class="card col-4 m-2">
+                            <img src="@row.ImagePath" class="card-img-top" alt="@row.ImagePath image" />
+                            <div class="card-body">
+                                <h5 class="card-title">@row.Name</h5>
+                                <p class="card-text">@row.Description</p>
+                                <p class="card-text">Id: @row.BGGid</p>
+                                <p class="card-text">Category: @row.Category</p>
+                            </div>
+                        </div>
+                }
+            </div>`;
+            document.getElementById("displayswitchtext").innerHTML = "Card form"
+        } else {
+            document.getElementById("infro").innerHTML =
+            `   <table id="infro">
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Category<th>
+                </tr>
+                @foreach (var row in data)
+                {
+                    <tr>
+                        <td>@row.Name</td>
+                        <td>@row.Description</td>
+                        <td>@row.Category</td>
+                    </tr>
+                }
+                </table>`;
+            document.getElementById("displayswitchtext").innerHTML = "Table form"
+        }
+    }
+
+</script>

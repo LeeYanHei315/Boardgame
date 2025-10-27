@@ -1,7 +1,35 @@
 ﻿
+@using WebMatrix.Data;
+
 @{
     ViewBag.Title = "Detail";
+    var db = Database.Open("GameDB");
+    var sql = "select * from BoardGame " +
+            //"join itemCategories " +
+            //"on items.categoryID = itemCategories.categoryID " +
+            "where BoardGame.BGGId = @0";
+    var id = Request.QueryString["id"];
+    var data = db.QuerySingle(sql, id);
 }
 
-<h2>Detail</h2>
+<div class="bg-light py-1 mt-2">
+    <h2 class="text-center">BoardGame Detail</h2>
+</div>
+
+@if (data != null)
+{
+    <div class="card col-10">
+        <div class="card-body">
+            <h5 class="card-title">@data.Name</h5>
+            <p class="card-text">@data.Description</p>
+            <p class="card-text">Id: @data.BGGid</p>
+        </div>
+        <img src="@data.ImagePath" class="card col-5" alt="@data.ImagePath image"/>
+    </div>
+}
+else
+{
+    <h2 class="text-danger text-center">Oops! - That product was not found</h2>
+}
+
 

@@ -5,8 +5,10 @@
     ViewBag.Title = "Detail";
     var db = Database.Open("GameDB");
     var sql = "select * from BoardGame " +
-            //"join itemCategories " +
-            //"on items.categoryID = itemCategories.categoryID " +
+            " left join GameCategory on BoardGame.BGGId = GameCategory.BGGID" +
+            " left join Category on GameCategory.Category = Category.CategoryId " +
+            " left join UserRating " +
+            "on UserRating.BGGId = BoardGame.BGGID " +
             "where BoardGame.BGGId = @0";
     var id = Request.QueryString["id"];
     var data = db.QuerySingle(sql, id);
@@ -20,11 +22,15 @@
 {
     <div class="card col-10">
         <div class="card-body">
-            <h5 class="card-title">@data.Name</h5>
+            <h5 class="card-title">@data.Name ?? "Not avaiable"</h5>
             <p class="card-text">@data.Description</p>
             <p class="card-text">Id: @data.BGGid</p>
+            <p class="card-text">Category: @data.Category</p>
+            <p class="card-text">Rating: @(data.Rating ?? "Not avaiable")</p>
+            <p class="card-text">Userrating: @(data.Username ?? "Not avaiable")</p>
+            <p class="card-text">ReviewDate: @(data.ReviewDate ?? "Not avaiable")</p>
+            <img src="@data.ImagePath" class="card col-5" alt="@data.ImagePath image" />
         </div>
-        <img src="@data.ImagePath" class="card col-5" alt="@data.ImagePath image"/>
     </div>
 }
 else

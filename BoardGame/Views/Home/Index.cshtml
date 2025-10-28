@@ -109,6 +109,7 @@
                                 <p class="card-text">@row.Description</p>
                                 <p class="card-text">Id: @row.BGGid</p>
                                 <p class="card-text">Category: @row.Category</p>
+                                <a href="/Home/Details?id=@row.BGGid">Click here for details</a>
                             </div>
                         </div>
                 }
@@ -120,14 +121,18 @@
                 <tr>
                     <th>Name</th>
                     <th>Description</th>
-                    <th>Category<th>
+                    <th>Id</th>
+                    <th>Category</th>
+                    <th>Details</th>
                 </tr>
                 @foreach (var row in data)
                 {
                     <tr>
                         <td>@row.Name</td>
                         <td>@row.Description</td>
+                        <td>@row.BGGid</td>
                         <td>@row.Category</td>
+                        <td><a href="/Home/Details?id=@row.BGGid">Click here for details</a></td>
                     </tr>
                 }
                 </table>`;

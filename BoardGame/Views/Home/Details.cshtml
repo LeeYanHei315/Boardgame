@@ -12,8 +12,11 @@
             "where BoardGame.BGGId = @0";
     var id = Request.QueryString["id"];
     var data = db.QuerySingle(sql, id);
+    var countsql = "select BGGID,count(Rating) as Numofrating,avg(Rating) as Avgrating from UserRating " +
+        "where UserRating.BGGId = @0 " +
+        "group by BGGID";
+    var countdata = db.QuerySingle(countsql, id);
 }
-
 <div class="bg-light py-1 mt-2">
     <h2 class="text-center">BoardGame Detail</h2>
 </div>
@@ -22,13 +25,24 @@
 {
     <div class="card col-10">
         <div class="card-body">
-            <h5 class="card-title">@data.Name ?? "Not avaiable"</h5>
+            <h5 class="card-title">@data.Name</h5>
             <p class="card-text">@data.Description</p>
             <p class="card-text">Id: @data.BGGid</p>
             <p class="card-text">Category: @data.Category</p>
             <p class="card-text">Rating: @(data.Rating ?? "Not avaiable")</p>
-            <p class="card-text">Userrating: @(data.Username ?? "Not avaiable")</p>
+            <p class="card-text">User: @(data.Username ?? "Not avaiable")</p>
             <p class="card-text">ReviewDate: @(data.ReviewDate ?? "Not avaiable")</p>
+            @if (countdata != null)
+            {
+                <p class="card-text">Number of rating: @countdata.Numofrating</p>
+                <p class="card-text">Average rating: @countdata.Avgrating </p>
+            }
+            else
+            {
+                    <p class="card-text">Number of rating: Not avaiable</p>
+                    <p class="card-text">Average rating: Not avaiable</p>
+
+            }
             <img src="@data.ImagePath" class="card col-5" alt="@data.ImagePath image" />
         </div>
     </div>
@@ -37,5 +51,3 @@ else
 {
     <h2 class="text-danger text-center">Oops! - That product was not found</h2>
 }
-
-

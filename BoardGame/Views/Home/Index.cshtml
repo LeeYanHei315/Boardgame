@@ -34,11 +34,17 @@
     var sql = "select BoardGame.Name, BoardGame.Description, BoardGame.Name, BoardGame.Family, Category.Category, BoardGame.ImagePath, BoardGame.BGGid from BoardGame" +
         " join GameCategory on BoardGame.BGGId = GameCategory.BGGID" +
         " join Category on GameCategory.Category = Category.CategoryId" +
-        " where BoardGame.Name like concat(@0, '%')";
-    var text = Request.Form["searchText"];
-    var data = db.Query(sql,text);
+        " where (BoardGame.Name like concat(@0, '%') or @0 = '') and (Category.Category = @1 or @1 = '') ";
+    var text = Request.Form["searchText"] ?? "";
+    var cat = Request.Form["category"] ?? "";
+    var data = db.Query(sql,text,cat);
     var catsql = "select * from category";
     var catdata = db.Query(catsql);
+    if (!IsPost)
+{
+        text = "";
+        cat = "";
+}
 
 }
 <style>
@@ -67,17 +73,18 @@
             <button type="submit" class="btn btn-primary">Search</button>
         </div>
     </div>
+    <label for="category">Choose a category:</label>
+    <select name="category" id="category">
+        <option value="">Category</option>
+        @foreach (var row in catdata)
+        {
+            <option value="@row.Category">@row.Category</option>
+        }
+    </select>
+    <button type="submit" class="btn btn-secondary">Search</button>
 </form>
 
-<form method="post" action="/Home/Index">
-    <select name="category" id="category">
-        <option selected>Category</option>
-        @foreach(var row in catdata)
-{
-                <option value="@row.CategoryID">@row.Category</option>
-}
-    </select>
-</form>
+
 
 <div class="form-check form-switch">
     <input class="form-check-input" type="checkbox" role ="switch" id="displayswitch" onclick="displaybg()" >

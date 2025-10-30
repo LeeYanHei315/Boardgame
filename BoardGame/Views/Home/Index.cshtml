@@ -37,6 +37,8 @@
         " where BoardGame.Name like concat(@0, '%')";
     var text = Request.Form["searchText"];
     var data = db.Query(sql,text);
+    var catsql = "select * from category";
+    var catdata = db.Query(catsql);
 
 }
 <style>
@@ -67,6 +69,15 @@
     </div>
 </form>
 
+<form method="post" action="/Home/Index">
+    <select name="category" id="category">
+        <option selected>Category</option>
+        @foreach(var row in catdata)
+{
+                <option value="@row.CategoryID">@row.Category</option>
+}
+    </select>
+</form>
 
 <div class="form-check form-switch">
     <input class="form-check-input" type="checkbox" role ="switch" id="displayswitch" onclick="displaybg()" >

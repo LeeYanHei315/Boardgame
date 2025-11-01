@@ -28,6 +28,7 @@
         </div>
     </main>*@
 
+
 @using WebMatrix.Data;
 @{
     var db = Database.Open("GameDB");
@@ -47,19 +48,11 @@
 }
 
 }
-<style>
-    tr{
-        border-bottom: 1px solid #ddd;
-    }
-    tr:hover {background-color: lightblue}
-    th {
-        height: 70px
-    }
-    td {
-        padding:10px;
-        text-align: left
-    }
-</style>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="/Content/Site.css" />
+</head>
+
 <div class="bg-light py-1 mt-2">
     <h2 class="text-center">All BoardGame</h2>
 </div>
@@ -91,7 +84,7 @@
     <label class="form-check-label" for="displayswitch" id="displayswitchtext">Table form</label>
 </div>
 
-<div id="infro">
+<div class="table-container">
     <table id="infro">
         <tr>
             <th>Name</th>

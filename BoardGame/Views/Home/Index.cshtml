@@ -32,20 +32,52 @@
 @using WebMatrix.Data;
 @{
     var db = Database.Open("GameDB");
-    var sql = "select BoardGame.Name, BoardGame.Description, BoardGame.Name, BoardGame.Family, Category.Category, BoardGame.ImagePath, BoardGame.BGGid from BoardGame" +
-        " join GameCategory on BoardGame.BGGId = GameCategory.BGGID" +
-        " join Category on GameCategory.Category = Category.CategoryId" +
-        " where (BoardGame.Name like concat(@0, '%') or @0 = '') and (Category.Category = @1 or @1 = '') ";
+    //var sql = "select BoardGame.Name, BoardGame.Description, BoardGame.Name, BoardGame.Family, Category.Category, BoardGame.ImagePath, BoardGame.BGGid from BoardGame" +
+    //    " join GameCategory on BoardGame.BGGId = GameCategory.BGGID" +
+    //    " join Category on GameCategory.Category = Category.CategoryId" +
+    //    " where (BoardGame.Name like concat(@0, '%') or @0 = '') and (Category.Category = @1 or @1 = '') ";
+    var sql = "select Category.Category, " +
+        "BoardGame.BGGId, " +
+        "BoardGame.Name, " +
+        "BoardGame.Description, " +
+        "BoardGame.YearPublished, " +
+        "BoardGame.GameWeight, " +
+        "BoardGame.MinPlayers, " +
+        "BoardGame.MaxPlayers, " +
+        "BoardGame.ComAgeRec, " +
+        "BoardGame.LanguageEase, " +
+        "BoardGame.BestPlayers, " +
+        "BoardGame.NumOwned, " +
+        "BoardGame.NumWant, " +
+        "BoardGame.NumWish, " +
+        "BoardGame.MfgPlayTime, " +
+        "BoardGame.ComMinPlaytime, " +
+        "BoardGame.ComMaxPlaytime, " +
+        "BoardGame.MfgAgeRec, " +
+        "BoardGame.NumAlternates, " +
+        "BoardGame.NumExpansions, " +
+        "BoardGame.NumImplementations, " +
+        "BoardGame.Family, " +
+        "BoardGame.ImagePath, " +
+        "BoardGame.RankInboardgame, " +
+        "BoardGame.RankInstrategygames, " +
+        "BoardGame.RankInfamilygames, " +
+        "BoardGame.RankInthematic " +
+        "from BoardGame" +
+       " join GameCategory on BoardGame.BGGId = GameCategory.BGGID" +
+       " join Category on GameCategory.Category = Category.CategoryId" +
+       " where (BoardGame.Name like concat(@0, '%') or @0 = '') and (Category.Category = @1 or @1 = '') ";
+
     var text = Request.Form["searchText"] ?? "";
     var cat = Request.Form["category"] ?? "";
     var data = db.Query(sql,text,cat);
     var catsql = "select * from category";
     var catdata = db.Query(catsql);
     if (!IsPost)
-{
+    {
         text = "";
         cat = "";
-}
+    }
 
 }
 
@@ -83,7 +115,7 @@
     <input class="form-check-input" type="checkbox" role ="switch" id="displayswitch" onclick="displaybg()" >
     <label class="form-check-label" for="displayswitch" id="displayswitchtext">Table form</label>
 </div>
-
+<div class="table-wrapper">
 <div class="table-container">
     <table id="infro">
         <tr>
@@ -91,6 +123,29 @@
             <th>Description</th>
             <th>Id</th>
             <th>Category</th>
+            <th>Year Published</th>
+            <th>Game difficulty</th>
+            <th>Minimum players</th>
+            <th>Maximum players</th>
+            <th>Age minimum</th>
+            <th>Easy to understand</th>
+            <th>Best player count</th>
+            <th>No.users own the game</th>
+            <th>No.users want the game</th>
+            <th>No.users wishlisted the game</th>
+            <th>Stated play time</th>
+            <th>Min play time</th>
+            <th>Max play time</th>
+            <th>Age recommendation</th>
+            <th>No. alternate versions</th>
+            <th>No. expansions</th>
+            <th>No. implementations</th>
+            <th>Game family</th>
+            <th>ImagePath</th>
+            <th>Rank fro boardgames</th>
+            <th>Rank in Strategy games</th>
+            <th>Rank in family games</th>
+            <th>Rank in thematic</th>
             <th>Details</th>
         </tr>
         @foreach (var row in data)
@@ -100,10 +155,34 @@
                 <td>@row.Description</td>
                 <td>@row.BGGid</td>
                 <td>@row.Category</td>
+                <td>@row.YearPublished</td>
+                <td>@row.GameWeight</td>
+                <td>@row.MinPlayers</td>
+                <td>@row.MaxPlayers</td>
+                <td>@row.ComAgeRec</td>
+                <td>@row.LanguageEase</td>
+                <td>@row.BestPlayers</td>
+                <td>@row.NumOwned</td>
+                <td>@row.NumWant</td>
+                <td>@row.NumWish</td>
+                <td>@row.MfgPlayTime</td>
+                <td>@row.ComMinPlaytime</td>
+                <td>@row.ComMaxPlaytime</td>
+                <td>@row.MfgAgeRec</td>
+                <td>@row.NumAlternates</td>
+                <td>@row.NumExpansions</td>
+                <td>@row.NumImplementations</td>
+                <td>@row.Family</td>
+                <td><img src="@row.ImagePath" class="card-img-top" alt="@row.ImagePath image" /></td>
+                <td>@row.RankInboardgame</td>
+                <td>@row.RankINstrategygames</td>
+                <td>@row.RankInfamilygames</td>
+                <td>@row.RankInthematic</td>
                 <td><a href="/Home/Details?id=@row.BGGid">Click here for details</a></td>
             </tr>
         }
     </table>
+</div>
 </div>
 
 <script>

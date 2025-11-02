@@ -17,16 +17,24 @@ input,
 select,
 textarea {
     max-width: 280px;
-}
+}s
 .table-container{
     display: flex;
-    justify-content: center;
+    justify-content: left;
     text-align: center;
-    margin-top: 15px;
+    margin-top: 15px auto;
+    overflow-x:auto;
+    overflow-y:auto;
+    width: 100%;
 }
+.table-container table {
+    width: 100%;
+    max-width: 1200px;
+    margin:0 auto;
+}
+
 th {
     height: 70px;
-    background-color: deepskyblue;
     padding: 15px;
 }
 
@@ -48,9 +56,9 @@ tr:hover {
     border-radius: 5px;
 }
 
-    .card:hover {
-        box-shadow: 0 16px 32px 0 rgba(0,0,0,0.2);
-    }
+.card:hover {
+    box-shadow: 0 16px 32px 0 rgba(0,0,0,0.2);
+}
 .card img{
     border-radius: 5px 5px 0 0;
 }

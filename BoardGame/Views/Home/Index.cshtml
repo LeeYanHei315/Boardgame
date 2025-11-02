@@ -115,7 +115,6 @@
     <input class="form-check-input" type="checkbox" role ="switch" id="displayswitch" onclick="displaybg()" >
     <label class="form-check-label" for="displayswitch" id="displayswitchtext">Table form</label>
 </div>
-<div class="table-wrapper">
 <div class="table-container">
     <table id="infro">
         <tr>
@@ -183,7 +182,6 @@
         }
     </table>
 </div>
-</div>
 
 <script>
     function displaybg() {
@@ -199,7 +197,8 @@
                                 <p class="card-text">@row.Description</p>
                                 <p class="card-text">Id: @row.BGGid</p>
                                 <p class="card-text">Category: @row.Category</p>
-                                <a href="/Home/Details?id=@row.BGGid">Click here for details</a>
+                                <p class="card-text">Family: @(row.Family ?? "Not avaiable")</p>
+                                <p><a href="/Home/Details?id=@row.BGGid" class="card-button">Details</a></p>
                             </div>
                         </div>
                 }
@@ -213,7 +212,31 @@
                     <th>Description</th>
                     <th>Id</th>
                     <th>Category</th>
+                    <th>Year Published</th>
+                    <th>Game difficulty</th>
+                    <th>Minimum players</th>
+                    <th>Maximum players</th>
+                    <th>Age minimum</th>
+                    <th>Easy to understand</th>
+                    <th>Best player count</th>
+                    <th>No.users own the game</th>
+                    <th>No.users want the game</th>
+                    <th>No.users wishlisted the game</th>
+                    <th>Stated play time</th>
+                    <th>Min play time</th>
+                    <th>Max play time</th>
+                    <th>Age recommendation</th>
+                    <th>No. alternate versions</th>
+                    <th>No. expansions</th>
+                    <th>No. implementations</th>
+                    <th>Game family</th>
+                    <th>ImagePath</th>
+                    <th>Rank fro boardgames</th>
+                    <th>Rank in Strategy games</th>
+                    <th>Rank in family games</th>
+                    <th>Rank in thematic</th>
                     <th>Details</th>
+
                 </tr>
                 @foreach (var row in data)
                 {
@@ -222,6 +245,29 @@
                         <td>@row.Description</td>
                         <td>@row.BGGid</td>
                         <td>@row.Category</td>
+                        <td>@row.YearPublished</td>
+                        <td>@row.GameWeight</td>
+                        <td>@row.MinPlayers</td>
+                        <td>@row.MaxPlayers</td>
+                        <td>@row.ComAgeRec</td>
+                        <td>@row.LanguageEase</td>
+                        <td>@row.BestPlayers</td>
+                        <td>@row.NumOwned</td>
+                        <td>@row.NumWant</td>
+                        <td>@row.NumWish</td>
+                        <td>@row.MfgPlayTime</td>
+                        <td>@row.ComMinPlaytime</td>
+                        <td>@row.ComMaxPlaytime</td>
+                        <td>@row.MfgAgeRec</td>
+                        <td>@row.NumAlternates</td>
+                        <td>@row.NumExpansions</td>
+                        <td>@row.NumImplementations</td>
+                        <td>@row.Family</td>
+                        <td><img src="@row.ImagePath" class="card-img-top" alt="@row.ImagePath image" /></td>
+                        <td>@row.RankInboardgame</td>
+                        <td>@row.RankINstrategygames</td>
+                        <td>@row.RankInfamilygames</td>
+                        <td>@row.RankInthematic</td>
                         <td><a href="/Home/Details?id=@row.BGGid">Click here for details</a></td>
                     </tr>
                 }

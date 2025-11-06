@@ -1,7 +1,62 @@
 ﻿
+@using WebMatrix.Data;
+
 @{
     ViewBag.Title = "Edit";
+    var db = Database.Open("GameDB");
+    var sql = "select * from BoardGame " +
+            " left join GameCategory on BoardGame.BGGId = GameCategory.BGGID" +
+            " left join Category on GameCategory.Category = Category.CategoryId " +
+            " left join UserRating " +
+            "on UserRating.BGGId = BoardGame.BGGID " +
+            "where BoardGame.BGGId = @0";
+    var id = Request.QueryString["id"];
+    var data = db.QuerySingle(sql, id);
+    var countsql = "select BGGID,count(Rating) as Numofrating,avg(Rating) as Avgrating from UserRating " +
+        "where UserRating.BGGId = @0 " +
+        "group by BGGID";
+    var countdata = db.QuerySingle(countsql, id);
+}
+<head>
+    <link rel="stylesheet" type="text/css" href="/Content/Site.css" />
+</head>
+<div class="bg-light py-1 mt-2">
+    <h2 class="text-center">BoardGame Edit</h2>
+</div>
+
+@if (data != null)
+{
+    <div class="row justify-content-center">
+        <div class="card col-10">
+            <div class="card-body">
+                <img src="@data.ImagePath" alt="@data.ImagePath image" />
+                <h5 class="card-title">@data.Name</h5>
+                <p class="card-text">@data.Description</p>
+                <p class="card-text">Id: @data.BGGid</p>
+                <p class="card-text">Category: @data.Category</p>
+                <p class="card-text">Family: @(data.Family ?? "Not avaiable")</p>
+                <p class="card-text">Rating: @(data.Rating ?? "Not avaiable")</p>
+                <p class="card-text">User: @(data.Username ?? "Not avaiable")</p>
+                <p class="card-text">ReviewDate: @(data.ReviewDate ?? "Not avaiable")</p>
+                @if (countdata != null)
+                {
+                    <p class="card-text">Number of rating: @countdata.Numofrating</p>
+                    <p class="card-text">Average rating: @countdata.Avgrating </p>
+                }
+                else
+                {
+                    <p class="card-text">Number of rating: Not avaiable</p>
+                    <p class="card-text">Average rating: Not avaiable</p>
+
+                }
+                <a href="/Home/Index" class="back-button">Back to list</a>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <h2 class="text-danger text-center">Oops! - That product was not found</h2>
 }
 
-<h2>Edit</h2>
 

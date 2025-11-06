@@ -146,6 +146,7 @@
             <th>Rank in family games</th>
             <th>Rank in thematic</th>
             <th>Details</th>
+            <th>Edit</th>
         </tr>
         @foreach (var row in data)
         {
@@ -177,7 +178,8 @@
                 <td>@row.RankINstrategygames</td>
                 <td>@row.RankInfamilygames</td>
                 <td>@row.RankInthematic</td>
-                <td><a href="/Home/Details?id=@row.BGGid">Click here for details</a></td>
+                <td><a href="/Home/Details?id=@row.BGGid">Click here fordetails</a></td>
+                <td><a href="/Home/Edit?id=@row.BGGid">Click here for edit</a></td>
             </tr>
         }
     </table>
@@ -199,6 +201,7 @@
                                 <p class="card-text">Category: @row.Category</p>
                                 <p class="card-text">Family: @(row.Family ?? "Not avaiable")</p>
                                 <p><a href="/Home/Details?id=@row.BGGid" class="card-button">Details</a></p>
+                                <p><a href="/Home/Edit?id=@row.BGGid" class="card-button">Edit</a></p>
                             </div>
                         </div>
                 }
@@ -236,6 +239,7 @@
                     <th>Rank in family games</th>
                     <th>Rank in thematic</th>
                     <th>Details</th>
+                    <th>Edit</th>
 
                 </tr>
                 @foreach (var row in data)
@@ -269,6 +273,7 @@
                         <td>@row.RankInfamilygames</td>
                         <td>@row.RankInthematic</td>
                         <td><a href="/Home/Details?id=@row.BGGid">Click here for details</a></td>
+                        <td><a href="/Home/Edit?id=@row.BGGid">Click here for edit</a></td>
                     </tr>
                 }
                 </table>`;

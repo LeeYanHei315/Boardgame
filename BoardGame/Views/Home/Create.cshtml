@@ -9,6 +9,10 @@
     var newid = lastid + 1;
     var themesql = "select * from Theme ";
     var themedata = db.Query(themesql);
+    var lastthemeidsql = "select Max(ThemeID) from Theme";
+    var lasthtemeid = db.QueryValue(lastthemeidsql);
+    var newthemeid = lasthtemeid + 1;
+
     if (IsPost)
     {
         var addsql = "insert into BoardGame(BGGId,Name, Description, Family) values(@0,@1,@2,@3)";
@@ -16,9 +20,21 @@
         var themename = Request.Form["theme"];
         var themeidsql = "select ThemeID from Theme where ThemeName = @0 ";
         var themeiddata = db.QuerySingle(themeidsql, themename);
-        var themeid = themeiddata.ThemeID;
-        var addthemesql = "insert into GameinThemes values(@0,@1)";
-        var addthemedata = db.Execute(addthemesql, newid, themeid);
+        if (themeiddata != null)
+        {
+            var themeid = themeiddata.ThemeID;
+            var addthemesql = "insert into GameinThemes values(@0,@1)";
+            var addthemedata = db.Execute(addthemesql, newid, themeid);
+
+        }
+        else
+        {
+            var newthemesql = "insert into Theme values(@0,@1)";
+            var addtheme = db.Execute(newthemesql, newthemeid, themename);
+            var themeid = themeiddata.ThemeID;
+            var addthemesql = "insert into GameinThemes values(@0,@1)";
+            var addthemedata = db.Execute(addthemesql, newid, themeid);
+        }
     }
 
 }

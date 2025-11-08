@@ -26,37 +26,22 @@
 
 @if (data != null)
 {
-    <div class="row justify-content-center">
-        <div class="card col-10">
-            <div class="card-body">
-                <img src="@data.ImagePath" alt="@data.ImagePath image" />
-                <h5 class="card-title">@data.Name</h5>
-                <p class="card-text">@data.Description</p>
-                <p class="card-text">Id: @data.BGGid</p>
-                <p class="card-text">Category: @data.Category</p>
-                <p class="card-text">Family: @(data.Family ?? "Not avaiable")</p>
-                <p class="card-text">Rating: @(data.Rating ?? "Not avaiable")</p>
-                <p class="card-text">User: @(data.Username ?? "Not avaiable")</p>
-                <p class="card-text">ReviewDate: @(data.ReviewDate ?? "Not avaiable")</p>
-                @if (countdata != null)
-                {
-                    <p class="card-text">Number of rating: @countdata.Numofrating</p>
-                    <p class="card-text">Average rating: @countdata.Avgrating </p>
-                }
-                else
-                {
-                    <p class="card-text">Number of rating: Not avaiable</p>
-                    <p class="card-text">Average rating: Not avaiable</p>
-
-                }
-                <a href="/Home/Index" class="back-button">Back to list</a>
-            </div>
+    <form method="post" action="/Home/Edit">
+        <label for="GameName">Name</label><br />
+        <input type="text" name="GameName" value="@data.name" class="form-control" />
+        <label for="GameDescription">Description</label><br />
+        <textarea name="GameDescription" cols="40">@data.Description</textarea> <br />
+        @*<label for=" GameCategory">Category</label><br/>
+        <input type="text" name="GameCategory" value="@familydata.Familycode" class="form-control" />*@
+        <div class="text-center mt-3">
+            <button type="submit" class="btn btn-success">Save</button>
+            <button type="reset" class="btn btn-danger">Clear</button>
         </div>
-    </div>
+    </form>
 }
 else
 {
-    <h2 class="text-danger text-center">Oops! - That product was not found</h2>
+    <h2 class="text-danger text-center">Oops! - That boardgame was not found</h2>
 }
 
 

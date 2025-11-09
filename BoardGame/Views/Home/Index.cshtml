@@ -64,8 +64,8 @@
         "BoardGame.RankInfamilygames, " +
         "BoardGame.RankInthematic " +
         "from BoardGame" +
-       " join GameCategory on BoardGame.BGGId = GameCategory.BGGID" +
-       " join Category on GameCategory.Category = Category.CategoryId" +
+       " left join GameCategory on BoardGame.BGGId = GameCategory.BGGID" +
+       " left join Category on GameCategory.Category = Category.CategoryId" +
        " where (BoardGame.Name like concat(@0, '%') or @0 = '') and (Category.Category = @1 or @1 = '') ";
 
     var text = Request.Form["searchText"] ?? "";

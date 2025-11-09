@@ -16,7 +16,12 @@
     if (IsPost)
     {
         var addsql = "insert into BoardGame(BGGId,Name, Description, Family) values(@0,@1,@2,@3)";
-        var data = db.Execute(addsql, newid, Request.Form["GameName"], Request.Form["GameDescription"], Request.Form["family"]);
+        var family = Request.Form["family"];
+        if (family == "")
+    {
+            family = null;
+    }
+        var data = db.Execute(addsql, newid, Request.Form["GameName"], Request.Form["GameDescription"], family);
         var themename = Request.Form["theme"];
         var themeidsql = "select ThemeID from Theme where ThemeName = @0 ";
         var themeiddata = db.QuerySingle(themeidsql, themename);
@@ -47,9 +52,9 @@
     <input type="text" name="GameName" class="form-control" placeholder="Game Name..." />
     <label for="GameDescription">Description</label><br />
     <input type="text" name="GameDescription" class="form-control" placeholder="Description..." />
-    <label for="Category">Category</label><br />
+    <label for="family">Family</label><br />
     <select class="form-select" aria-label="Default select example" name="family">
-        <option selected>Categories</option>
+        <option  value= "" selected>Family</option>
         @foreach (var row in familydata)
         {
             <option value="@row.FamilyCode">@row.Family</option>

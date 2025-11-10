@@ -12,16 +12,20 @@
     var lastthemeidsql = "select Max(ThemeID) from Theme";
     var lasthtemeid = db.QueryValue(lastthemeidsql);
     var newthemeid = lasthtemeid + 1;
-
     if (IsPost)
     {
-        var addsql = "insert into BoardGame(BGGId,Name, Description, Family) values(@0,@1,@2,@3)";
+        var addsql = "insert into BoardGame values(@0,@1,@2,@3,@4,@5,@6,@7,@8,@9,@10,@11,@12,@13,@14,@15,@16,@17,@18,@19,@20,@21,@22,@23,@24,@25)";
         var family = Request.Form["family"];
         if (family == "")
-    {
+        {
             family = null;
-    }
-        var data = db.Execute(addsql, newid, Request.Form["GameName"], Request.Form["GameDescription"], family);
+        }
+        var data = db.Execute(addsql, newid, Request.Form["GameName"], Request.Form["GameDescription"], Request.Form["YearPublished"],
+            Request.Form["GameWeight"], Request.Form["MinPlayers"], Request.Form["MaxPlayers"], Request.Form["ComAgeRec"], Request.Form["LanguageEase"],
+            Request.Form["BestPlayers"], Request.Form["NumOwned"], Request.Form["NumWant"], Request.Form["NumWish"], Request.Form["MfgPlaytime"],
+            Request.Form["ComMinPlaytime"], Request.Form["ComMaxPlaytime"], Request.Form["MfgAgeRec"], Request.Form["NumAlternates"],
+            Request.Form["NumExpansions"], Request.Form["NumImplementations"], family,Request.Form["ImagePath"], Request.Form["RankInboardgames"],
+            Request.Form["RankInstrategygames"], Request.Form["RankInfamilygames"], Request.Form["RankInthematic"]);
         var themename = Request.Form["theme"];
         var themeidsql = "select ThemeID from Theme where ThemeName = @0 ";
         var themeiddata = db.QuerySingle(themeidsql, themename);
@@ -54,20 +58,64 @@
     <input type="text" name="GameDescription" class="form-control" placeholder="Description..." />
     <label for="family">Family</label><br />
     <select class="form-select" aria-label="Default select example" name="family">
-        <option  value= "" selected>Family</option>
+        <option value="" selected>Family</option>
         @foreach (var row in familydata)
         {
             <option value="@row.FamilyCode">@row.Family</option>
         }
     </select>
-    <label for="theme">Theme</label><br/>
-    <input type="text" list="suggestions" name="theme">
+    <label for="theme">Theme</label><br />
+    <input type="text" list="suggestions" name="theme"><br />
     <datalist id="suggestions">
         @foreach (var row in themedata)
-{
-                <option value="@row.ThemeName">@row.ThemeName</option>
-            }
+        {
+            <option value="@row.ThemeName">@row.ThemeName</option>
+        }
     </datalist>
+    <label for="YearPublished">YearPublished</label><br />
+    <input type="date" name="YearPublished" class="form-control" />
+    <label for="GameWeight">GameWeight</label><br />
+    <input type="number" name="GameWeight" class="form-control" min="0" />
+    <label for="MinPlayers">MinPlayers</label><br />
+    <input type="number" name="MinPlayers" class="form-control" min="0p" />
+    <label for="MaxPlayers">MaxPlayers</label><br />
+    <input type="number" name="MaxPlayers" class="form-control" min="0" />
+    <label for="ComAgeRec">ComAgeRec</label><br />
+    <input type="number" name="ComAgeRec" class="form-control" min="0" />
+    <label for="LanguageEase">LanguageEase</label><br />
+    <input type="number" name="LanguageEase" class="form-control"min="0"  />
+    <label for="BestPlayers">BestPlayers</label><br />
+    <input type="number" name="BestPlayers" class="form-control" min="0" />
+    <label for="NumOwned">NumOwned</label><br />
+    <input type="number" name="NumOwned" class="form-control"min="0"  />
+    <label for="NumWant">NumWant</label><br />
+    <input type="number" name="NumWant" class="form-control" min="0" />
+    <label for="NumWish">NumWish</label><br />
+    <input type="number" name="NumWish" class="form-control" min="0" />
+    <label for="MfgPlaytime">MfgPlaytime</label><br />
+    <input type="number" name="MfgPlaytime" class="form-control" min="0" />
+    <label for="ComMinPlaytime">ComMinPlaytime</label><br />
+    <input type="number" name="ComMinPlaytime" class="form-control" min="0" />
+    <label for="ComMaxPlaytime">ComMaxPlaytime</label><br />
+    <input type="number" name="ComMaxPlaytime" class="form-control" min="0" />
+    <label for="MfgAgeRec">MfgAgeRec</label><br />
+    <input type="number" name="MfgAgeRec" class="form-control" min="0" />
+    <label for="NumAlternates">NumAlternates</label><br />
+    <input type="number" name="NumAlternates" class="form-control" min="0" />
+    <label for="NumExpansions">NumExpansions</label><br />
+    <input type="number" name="NumExpansions" class="form-control" min="0" />
+    <label for="NumImplementations">NumImplementations</label><br />
+    <input type="number" name="NumImplementations" class="form-control" min="0" />
+    <label for="ImagePath">Please enter the link of the image</label><br />
+    <input type="text" name="ImagePath" class="form-control" />
+    <label for="RankInboardgames">RankInboardgames</label><br />
+    <input type="number" name="RankInboardgames" class="form-control" min="0" max="21926"/>
+    <label for="RankInstrategygames">RankInstrategygames</label><br />
+    <input type="number" name="RankInstrategygames" class="form-control"  min="0" max="21926"/>
+    <label for="RankInfamilygames">RankInfamilygames</label><br />
+    <input type="number" name="RankInfamilygames" class="form-control" min="0"  max="21926"/>
+    <label for="RankInthematic">RankInthematic</label><br />
+    <input type="number" name="RankInthematic" class="form-control" min="0" max="21926" />
     <div class="text-center mt-3">
         <button type="submit" class="btn btn-success">Save</button>
         <button type="reset" class="btn btn-danger">Clear</button>

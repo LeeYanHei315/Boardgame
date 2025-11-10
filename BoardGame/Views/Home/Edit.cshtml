@@ -6,17 +6,48 @@
     var db = Database.Open("GameDB");
     var sql = "select * from BoardGame " +
               "where BoardGame.BGGId = @0";
+    var familysql = "select FamilyCode, FamilyCode + ' - ' + Family as Family from GameFamily";
+    var familydata = db.Query(familysql);
     var id = Request.QueryString["id"];
     var data = db.QuerySingle(sql, id);
     var testname = Request.Form["Name"];
     var testdescription = Request.Form["Description"];
     if (IsPost)
     {
-        var editsql = "Update BoardGame set name = @0, Description = @1 where BGGId = @2";
-        var editData = db.Execute(editsql, Request.Form["Name"], Request.Form["Description"], Request.QueryString["id"]);
+        var Gameweight = Request.Form["GameWeight"];
+        var YearPublisheddate = Request["YearPublished"];
+        var MinPlayers = Request.Form["MinPlayers"];
+        var MaxPlayers = Request.Form["MaxPlayers"];
+        var ComAgeRec = Request.Form["ComAgeRec"];
+        var LanguageEase = Request.Form["LanguageEase"];
+        var BestPlayers = Request.Form["BestPlayers"];
+        var NumOwned = Request.Form["NumOwned"];
+        var NumWant = Request.Form["NumWant"];
+        var NumWish = Request.Form["NumWish"];
+        var MfgPlaytime = Request.Form["MfgPlaytime"];
+        var ComMinPlaytime = Request.Form["ComMinPlaytime"];
+        var ComMaxPlaytime = Request.Form["ComMaxPlaytime"];
+        var MfgAgeRec = Request.Form["MfgAgeRec"];
+        var NumAlternates = Request.Form["NumAlternates"];
+        var NumExpansions = Request.Form["NumExpansions"];
+        var NumImplementations = Request.Form["NumImplementations"];
+        var ImagePath = Request.Form["ImagePath"];
+        var RankInboardgame = Request.Form["RankInboardgame"];
+        var RankInstrategygames = Request.Form["RankInstrategygames"];
+        var RankInfamilygames = Request.Form["RankInfamilygames"];
+        var RankInthematic = Request.Form["RankInthematic"];
+        var editsql = "Update BoardGame set name = @0, Description = @1 ,YearPublished=CAST(@2 AS datetime), GameWeight = @3, " +
+                        " MinPlayers = @4, MaxPlayers = @5, ComAgeRec = @6, LanguageEase = @7, BestPlayers = @8, NumOwned = @9, " +
+                        "NumWant = @10, NumWish = @11, MfgPlaytime = @12, ComMinPlaytime = @13, ComMaxPlaytime = @14, MfgAgeRec = @15, " +
+                        "NumAlternates = @16, NumExpansions = @17, NumImplementations = @18, ImagePath = @19, RankInboardgame = @20, " +
+                        "RankInstrategygames = @21, RankInfamilygames = @22, RankInthematic = @23 " +
+                        "where BGGId = @24";
+        var editData = db.Execute(editsql, testname, testdescription,YearPublisheddate, Gameweight, MinPlayers, MaxPlayers, ComAgeRec,
+            LanguageEase, BestPlayers, NumOwned, NumWant, NumWish, MfgPlaytime, ComMinPlaytime, ComMaxPlaytime, MfgAgeRec, NumAlternates,
+            NumExpansions, NumImplementations, ImagePath, RankInboardgame, RankInstrategygames, RankInfamilygames, RankInthematic, id);
 
     }
-    }
+}
 <head>
     <link rel="stylesheet" type="text/css" href="/Content/Site.css" />
 </head>
@@ -24,15 +55,16 @@
     <h2 class="text-center">BoardGame Edit</h2>
 </div>
 
+
 <form method="post" action="/Home/Edit?id=@(id)">
     <label for="Name">Name</label><br />
     <input type="text" name="Name" value="@data.name" class="form-control" />
     <label for="Description">Description</label><br />
     <textarea name="Description" cols="40" rows="5">@data.Description</textarea> <br />
-    @*<label for="YearPublished">YearPublished</label><br />
-    <input type="text" name="YearPublished" value="@data.YearPublished" class="form-control" />
+    <label for="YearPublished">YearPublished</label><br />
+    <input type="datetime" name="YearPublished" value="@data.YearPublished" class="form-control" />
     <label for="GameWeight">GameWeight</label><br />
-    <input type="number" step="0.01" name="GameWeight" value="@data.GameWeight" class="form-control" />
+    <input type="number" name="GameWeight" value="@data.GameWeight" class="form-control" />
     <label for="MinPlayers">MinPlayers</label><br />
     <input type="number" name="MinPlayers" value="@data.MinPlayers" class="form-control" />
     <label for="MaxPlayers">MaxPlayers</label><br />
@@ -47,6 +79,8 @@
     <input type="number" name="NumOwned" value="@data.NumOwned" class="form-control" />
     <label for="NumWant">NumWant</label><br />
     <input type="number" name="NumWant" value="@data.NumWant" class="form-control" />
+    <label for="NumWish">NumWish</label><br />
+    <input type="number" name="NumWish" value="@data.NumWish" class="form-control" />
     <label for="MfgPlayTime">MfgPlayTime</label><br />
     <input type="number" name="MfgPlayTime" value="@data.MfgPlayTime" class="form-control" />
     <label for="ComMinPlaytime">ComMinPlaytime</label><br />
@@ -61,8 +95,16 @@
     <input type="number" name="NumExpansions" value="@data.NumExpansions" class="form-control" />
     <label for="NumImplementations">NumImplementations</label><br />
     <input type="number" name="NumImplementations" value="@data.NumImplementations" class="form-control" />
-    <label for="Family">Family</label><br />
-    <input type="number" name="Family" value="@data.Family" class="form-control" />
+    <label for="family">Family</label><br />
+    <select class="form-select" aria-label="Default select example" name="family">
+        <option value="" selected>Family</option>
+        @foreach (var row in familydata)
+        {
+            <option value="@row.FamilyCode">@row.Family</option>
+        }
+    </select>
+    <label for="ImagePath">Please enter the link of the image</label><br />
+    <input type="text" name="ImagePath" value="@data.ImagePath" class="form-control" />
     <label for="RankInboardgame">RankInboardgame</label><br />
     <input type="number" name="RankInboardgame" value="@data.RankInboardgame" class="form-control" />
     <label for="RankINstrategygames">RankINstrategygames</label><br />
@@ -70,7 +112,7 @@
     <label for="RankInfamilygames">RankInfamilygames</label><br />
     <input type="number" name="RankInfamilygames" value="@data.RankInfamilygames" class="form-control" />
     <label for="RankInthematic">RankInthematic</label><br />
-    <input type="number" name="RankInthematic" value="@data.RankInthematic" class="form-control" />*@
+    <input type="number" name="RankInthematic" value="@data.RankInthematic" class="form-control" />
     <div class="text-center mt-3">
         <button type="submit" class="btn btn-success">Update</button>
         <button type="reset" class="btn btn-danger">Clear</button>

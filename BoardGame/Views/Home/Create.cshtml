@@ -24,8 +24,12 @@
             Request.Form["GameWeight"], Request.Form["MinPlayers"], Request.Form["MaxPlayers"], Request.Form["ComAgeRec"], Request.Form["LanguageEase"],
             Request.Form["BestPlayers"], Request.Form["NumOwned"], Request.Form["NumWant"], Request.Form["NumWish"], Request.Form["MfgPlaytime"],
             Request.Form["ComMinPlaytime"], Request.Form["ComMaxPlaytime"], Request.Form["MfgAgeRec"], Request.Form["NumAlternates"],
-            Request.Form["NumExpansions"], Request.Form["NumImplementations"], family,Request.Form["ImagePath"], Request.Form["RankInboardgames"],
+            Request.Form["NumExpansions"], Request.Form["NumImplementations"], family, Request.Form["ImagePath"], Request.Form["RankInboardgames"],
             Request.Form["RankInstrategygames"], Request.Form["RankInfamilygames"], Request.Form["RankInthematic"]);
+        if (data == 1)
+        {
+            <div class="alert alert-success">Board Game added</div>
+        }
         var themename = Request.Form["theme"];
         var themeidsql = "select ThemeID from Theme where ThemeName = @0 ";
         var themeiddata = db.QuerySingle(themeidsql, themename);
@@ -53,9 +57,9 @@
 
 <form method="post" action="/Home/Create">
     <label for="GameName">Name</label><br />
-    <input type="text" name="GameName" class="form-control" placeholder="Game Name..." />
+    <input type="text" name="GameName" class="form-control" placeholder="Game Name..." required />
     <label for="GameDescription">Description</label><br />
-    <input type="text" name="GameDescription" class="form-control" placeholder="Description..." />
+    <input type="text" name="GameDescription" class="form-control" placeholder="Description..." required />
     <label for="family">Family</label><br />
     <select class="form-select" aria-label="Default select example" name="family">
         <option value="" selected>Family</option>
@@ -83,11 +87,11 @@
     <label for="ComAgeRec">ComAgeRec</label><br />
     <input type="number" name="ComAgeRec" class="form-control" min="0" />
     <label for="LanguageEase">LanguageEase</label><br />
-    <input type="number" name="LanguageEase" class="form-control"min="0"  />
+    <input type="number" name="LanguageEase" class="form-control" min="0" />
     <label for="BestPlayers">BestPlayers</label><br />
     <input type="number" name="BestPlayers" class="form-control" min="0" />
     <label for="NumOwned">NumOwned</label><br />
-    <input type="number" name="NumOwned" class="form-control"min="0"  />
+    <input type="number" name="NumOwned" class="form-control" min="0" />
     <label for="NumWant">NumWant</label><br />
     <input type="number" name="NumWant" class="form-control" min="0" />
     <label for="NumWish">NumWish</label><br />
@@ -107,13 +111,13 @@
     <label for="NumImplementations">NumImplementations</label><br />
     <input type="number" name="NumImplementations" class="form-control" min="0" />
     <label for="ImagePath">Please enter the link of the image</label><br />
-    <input type="text" name="ImagePath" class="form-control" />
+    <input type="url" name="ImagePath" class="form-control" placeholder="https://" />
     <label for="RankInboardgames">RankInboardgames</label><br />
-    <input type="number" name="RankInboardgames" class="form-control" min="0" max="21926"/>
+    <input type="number" name="RankInboardgames" class="form-control" min="0" max="21926" />
     <label for="RankInstrategygames">RankInstrategygames</label><br />
-    <input type="number" name="RankInstrategygames" class="form-control"  min="0" max="21926"/>
+    <input type="number" name="RankInstrategygames" class="form-control" min="0" max="21926" />
     <label for="RankInfamilygames">RankInfamilygames</label><br />
-    <input type="number" name="RankInfamilygames" class="form-control" min="0"  max="21926"/>
+    <input type="number" name="RankInfamilygames" class="form-control" min="0" max="21926" />
     <label for="RankInthematic">RankInthematic</label><br />
     <input type="number" name="RankInthematic" class="form-control" min="0" max="21926" />
     <div class="text-center mt-3">

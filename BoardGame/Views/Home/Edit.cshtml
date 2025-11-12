@@ -42,7 +42,7 @@
                         "NumAlternates = @16, NumExpansions = @17, NumImplementations = @18, ImagePath = @19, RankInboardgame = @20, " +
                         "RankInstrategygames = @21, RankInfamilygames = @22, RankInthematic = @23 " +
                         "where BGGId = @24";
-        var editData = db.Execute(editsql, testname, testdescription,YearPublisheddate, Gameweight, MinPlayers, MaxPlayers, ComAgeRec,
+        var editData = db.Execute(editsql, testname, testdescription, YearPublisheddate, Gameweight, MinPlayers, MaxPlayers, ComAgeRec,
             LanguageEase, BestPlayers, NumOwned, NumWant, NumWish, MfgPlaytime, ComMinPlaytime, ComMaxPlaytime, MfgAgeRec, NumAlternates,
             NumExpansions, NumImplementations, ImagePath, RankInboardgame, RankInstrategygames, RankInfamilygames, RankInthematic, id);
 
@@ -55,66 +55,75 @@
     <h2 class="text-center">BoardGame Edit</h2>
 </div>
 
-
-<form method="post" action="/Home/Edit?id=@(id)">
-    <label for="Name">Name</label><br />
-    <input type="text" name="Name" value="@data.name" class="form-control" />
-    <label for="Description">Description</label><br />
-    <textarea name="Description" cols="40" rows="5">@data.Description</textarea> <br />
-    <label for="YearPublished">YearPublished</label><br />
-    <input type="datetime" name="YearPublished" value="@data.YearPublished" class="form-control" />
-    <label for="GameWeight">GameWeight</label><br />
-    <input type="number" name="GameWeight" value="@data.GameWeight" class="form-control" />
-    <label for="MinPlayers">MinPlayers</label><br />
-    <input type="number" name="MinPlayers" value="@data.MinPlayers" class="form-control" />
-    <label for="MaxPlayers">MaxPlayers</label><br />
-    <input type="number" name="MaxPlayers" value="@data.MaxPlayers" class="form-control" />
-    <label for="ComAgeRec">ComAgeRec</label><br />
-    <input type="number" name="ComAgeRec" value="@data.ComAgeRec" class="form-control" />
-    <label for="LanguageEase">LanguageEase</label><br />
-    <input type="number" name="LanguageEase" value="@data.LanguageEase" class="form-control" />
-    <label for="BestPlayers">BestPlayers</label><br />
-    <input type="number" name="BestPlayers" value="@data.BestPlayers" class="form-control" />
-    <label for="NumOwned">NumOwned</label><br />
-    <input type="number" name="NumOwned" value="@data.NumOwned" class="form-control" />
-    <label for="NumWant">NumWant</label><br />
-    <input type="number" name="NumWant" value="@data.NumWant" class="form-control" />
-    <label for="NumWish">NumWish</label><br />
-    <input type="number" name="NumWish" value="@data.NumWish" class="form-control" />
-    <label for="MfgPlayTime">MfgPlayTime</label><br />
-    <input type="number" name="MfgPlayTime" value="@data.MfgPlayTime" class="form-control" />
-    <label for="ComMinPlaytime">ComMinPlaytime</label><br />
-    <input type="number" name="ComMinPlaytime" value="@data.ComMinPlaytime" class="form-control" />
-    <label for="ComMaxPlaytime">ComMaxPlaytime</label><br />
-    <input type="number" name="ComMaxPlaytime" value="@data.ComMaxPlaytime" class="form-control" />
-    <label for="MfgAgeRec">MfgAgeRec</label><br />
-    <input type="number" name="MfgAgeRec" value="@data.MfgAgeRec" class="form-control" />
-    <label for="NumAlternates">NumAlternates</label><br />
-    <input type="number" name="NumAlternates" value="@data.NumAlternates" class="form-control" />
-    <label for="NumExpansions">NumExpansions</label><br />
-    <input type="number" name="NumExpansions" value="@data.NumExpansions" class="form-control" />
-    <label for="NumImplementations">NumImplementations</label><br />
-    <input type="number" name="NumImplementations" value="@data.NumImplementations" class="form-control" />
-    <label for="family">Family</label><br />
-    <select class="form-select" aria-label="Default select example" name="family">
-        <option value="" selected>Family</option>
-        @foreach (var row in familydata)
-        {
-            <option value="@row.FamilyCode">@row.Family</option>
-        }
-    </select>
-    <label for="ImagePath">Please enter the link of the image</label><br />
-    <input type="text" name="ImagePath" value="@data.ImagePath" class="form-control" />
-    <label for="RankInboardgame">RankInboardgame</label><br />
-    <input type="number" name="RankInboardgame" value="@data.RankInboardgame" class="form-control" />
-    <label for="RankINstrategygames">RankINstrategygames</label><br />
-    <input type="number" name="RankINstrategygames" value="@data.RankINstrategygames" class="form-control" />
-    <label for="RankInfamilygames">RankInfamilygames</label><br />
-    <input type="number" name="RankInfamilygames" value="@data.RankInfamilygames" class="form-control" />
-    <label for="RankInthematic">RankInthematic</label><br />
-    <input type="number" name="RankInthematic" value="@data.RankInthematic" class="form-control" />
-    <div class="text-center mt-3">
-        <button type="submit" class="btn btn-success">Update</button>
-        <button type="reset" class="btn btn-danger">Clear</button>
-    </div>
-</form>
+@if (data != null)
+{
+    <form method="post" action="/Home/Edit?id=@(id)">
+        <label for="Name">Name</label><br />
+        <input type="text" name="Name" value="@data.name" class="form-control" />
+        <label for="Description">Description</label><br />
+        <textarea name="Description" cols="40" rows="5">@data.Description</textarea> <br />
+        <label for="YearPublished">YearPublished</label><br />
+        <input type="datetime" name="YearPublished" value="@data.YearPublished" class="form-control" />
+        <label for="GameWeight">GameWeight</label><br />
+        <input type="number" name="GameWeight" value="@data.GameWeight" class="form-control" />
+        <label for="MinPlayers">MinPlayers</label><br />
+        <input type="number" name="MinPlayers" value="@data.MinPlayers" class="form-control" />
+        <label for="MaxPlayers">MaxPlayers</label><br />
+        <input type="number" name="MaxPlayers" value="@data.MaxPlayers" class="form-control" />
+        <label for="ComAgeRec">ComAgeRec</label><br />
+        <input type="number" name="ComAgeRec" value="@data.ComAgeRec" class="form-control" />
+        <label for="LanguageEase">LanguageEase</label><br />
+        <input type="number" name="LanguageEase" value="@data.LanguageEase" class="form-control" />
+        <label for="BestPlayers">BestPlayers</label><br />
+        <input type="number" name="BestPlayers" value="@data.BestPlayers" class="form-control" />
+        <label for="NumOwned">NumOwned</label><br />
+        <input type="number" name="NumOwned" value="@data.NumOwned" class="form-control" />
+        <label for="NumWant">NumWant</label><br />
+        <input type="number" name="NumWant" value="@data.NumWant" class="form-control" />
+        <label for="NumWish">NumWish</label><br />
+        <input type="number" name="NumWish" value="@data.NumWish" class="form-control" />
+        <label for="MfgPlayTime">MfgPlayTime</label><br />
+        <input type="number" name="MfgPlayTime" value="@data.MfgPlayTime" class="form-control" />
+        <label for="ComMinPlaytime">ComMinPlaytime</label><br />
+        <input type="number" name="ComMinPlaytime" value="@data.ComMinPlaytime" class="form-control" />
+        <label for="ComMaxPlaytime">ComMaxPlaytime</label><br />
+        <input type="number" name="ComMaxPlaytime" value="@data.ComMaxPlaytime" class="form-control" />
+        <label for="MfgAgeRec">MfgAgeRec</label><br />
+        <input type="number" name="MfgAgeRec" value="@data.MfgAgeRec" class="form-control" />
+        <label for="NumAlternates">NumAlternates</label><br />
+        <input type="number" name="NumAlternates" value="@data.NumAlternates" class="form-control" />
+        <label for="NumExpansions">NumExpansions</label><br />
+        <input type="number" name="NumExpansions" value="@data.NumExpansions" class="form-control" />
+        <label for="NumImplementations">NumImplementations</label><br />
+        <input type="number" name="NumImplementations" value="@data.NumImplementations" class="form-control" />
+        <label for="family">Family</label><br />
+        <select class="form-select" aria-label="Default select example" name="family">
+            <option value="" selected>Family</option>
+            @foreach (var row in familydata)
+            {
+                <option value="@row.FamilyCode">@row.Family</option>
+            }
+        </select>
+        <label for="ImagePath">Please enter the link of the image</label><br />
+        <input type="url" name="ImagePath" class="form-control" placeholder="https://"/>
+        <label for="RankInboardgame">RankInboardgame</label><br />
+        <input type="number" name="RankInboardgame" value="@data.RankInboardgame" class="form-control" />
+        <label for="RankINstrategygames">RankINstrategygames</label><br />
+        <input type="number" name="RankINstrategygames" value="@data.RankINstrategygames" class="form-control" />
+        <label for="RankInfamilygames">RankInfamilygames</label><br />
+        <input type="number" name="RankInfamilygames" value="@data.RankInfamilygames" class="form-control" />
+        <label for="RankInthematic">RankInthematic</label><br />
+        <input type="number" name="RankInthematic" value="@data.RankInthematic" class="form-control" />
+        <div class="text-center mt-3">
+            <button type="submit" class="btn btn-success">Update</button>
+            <button type="reset" class="btn btn-danger">Clear</button>
+        </div>
+    </form>
+}
+else
+{
+    <h2 class="text-danger text-center">Details no exist in the current system</h2>
+    <p> You could add new records or cancel the update</p>
+    <button type="button" class="btn btn-secondary" onclick="/Home/Create">Newrecord</button>
+    <button type="button" class="btn btn-dark" onclick="/Home/Index">Main page</button>
+}
